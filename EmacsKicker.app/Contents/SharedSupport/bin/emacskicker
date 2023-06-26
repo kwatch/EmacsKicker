@@ -1,0 +1,74 @@
+#!/bin/sh
+
+
+###
+### Invokes `emacsclient` command when `emacs://` link clicked.
+###
+### Usage:
+###   emacskicker [-h|--help]
+###   emacskicker emacs://open?url=file://<filepath>&line=<number>
+###
+### $Release: 0.0.0 $
+### $Copyright: (c)2023 kuwata-lab.com all rights reserved. $
+### $License: MIT License $
+###
+
+set -eu
+
+DEBUG=${DEBUG:-}
+logfile="/tmp/emacskicker.log"
+
+debug() {
+  if [ -n "$DEBUG" ]; then
+    date=$(date +'[%Y-%m-%d %H:%M:%S]')
+    echo "$date" "$@" >> $logfile
+  fi
+}
+
+### print help message
+if [ $# = 0 ] || [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
+  cat <<END
+Usage:
+  emacskicker [-h|--help]
+  emacskicker emacs://open?url=file://<filepath>&line=<number>
+END
+  exit
+fi
+
+### retrieve filename and linenum from URL
+url=$1   # ex: texteditor://open?url=file:///Users/xxx/example.py&line=123
+file=$(echo "$url" | sed -Ee '/^emacs:\/\/open\/?\?/s/.*\?(url=file:\/\/|file=)([^&]*).*/\2/')
+line=$(echo "$url" | sed -Ee '/^emacs:\/\/open\/?\?/s/.*&line=([0-9]*).*/\1/')
+
+debug "url='$url', file='$file', line='$line'"
+
+if [ -z "$file" ]; then
+  echo "[ERROR] failed to detect file path." | tee -a $logfile >&2
+  exit 1
+fi
+
+### find `emacsclient` command
+dirs="
+  $HOME/bin
+  /usr/local/bin
+  /opt/local/bin
+  /opt/homebrew/bin
+  /Applications/Emacs.app/Contents/MacOS/bin
+"
+emacsclient=""
+for d in $dirs; do
+  if [ -f "$d/emacsclient" ]; then
+    emacsclient="$d/emacsclient"
+    break
+  fi
+done
+
+debug "emacsclient='$emacsclient'"
+
+if [ -z "$emacsclient" ]; then
+  echo "[ERROR] failed to find 'emacsclient' command." | tee -a $logfile >&2
+fi
+
+### invoke `emacsclient` to open a file in Emacs
+debug "$emacsclient" -n +"$line" "$file"
+"$emacsclient" -n +"$line" "$file"
