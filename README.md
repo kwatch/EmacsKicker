@@ -21,7 +21,7 @@ it will work on any macOS version and any CPU architecture.
 Installation
 ------------
 
-1. Download Zip file and unzip it.
+1. [Download Zip file](https://github.com/kwatch/EmacsKicker/tags) and unzip it.
 2. Copy EmacsKicker.app to ``/Applications`` folder.
 3. (optional) Create a symbolic lik for `emacsclient` in the `/usr/local/bin`.
 
