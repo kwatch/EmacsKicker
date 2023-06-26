@@ -1,0 +1,39 @@
+
+
+RELEASE   = "0.0.0"
+COPYRIGHT = "copyright(c) 2023 kuwata-lab.com all rights reserved"
+LICENSE   = "MIT License"
+
+
+def edit_files(*filenames, verbose: false, &block)
+  filenames.each do |filename|
+    File.open(filename, 'r+', encoding: 'utf-8') do |f|
+      s1 = f.read()
+      s2 = yield s1
+      if s1 != s2
+        f.rewind()
+        f.truncate(0)
+        f.write(s2)
+      end
+      if verbose
+        indicator = s1 != s2 ? "(changed)" : "(not-changed)"
+        puts "* #{indicator} #{filename}"
+      end
+    end
+  end
+end
+
+
+desc "edit files"
+task :edit do
+  files = [
+    "EmacsKicker.app/Contents/SharedSupport/bin/emacskicker",
+    "README.md",
+  ]
+  edit_files(*files, verbose: true) do |s|
+    s = s.gsub(/[\$]Release(: .*? )?[\$]/  , '$'"Release: #{RELEASE} "'$')
+    s = s.gsub(/[\$]Copyright(: .*? )?[\$]/, '$'"Copyright: #{COPYRIGHT} "'$')
+    s = s.gsub(/[\$]License(: .*? )?[\$]/  , '$'"License: #{LICENSE} "'$')
+    s
+  end
+end
