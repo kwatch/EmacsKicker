@@ -9,13 +9,13 @@ Overview
 
 EmacsKicker.app is a small macOS application to handle 'emacs://' URL schema.
 This application invokes Emacs.app when you clicked 'emacs://' URL
-(for example emacs://open?url=file://<file>&line=<number> ).
+(for example emacs://open?url=file://<file>&line=<number> ) in your browser.
 
 This is very useful for web application development as you can open
 program files in Emacs.app with just one click on your browser.
 
 EmacsKicker.app is implemented in AppleScript and shell script, therefore
-it will work on any macOS version.
+it will work on any macOS version and any CPU architecture.
 
 
 Installation
@@ -49,6 +49,74 @@ Internal Detail
 EmacsKicker.app just runs shell script
 `/Applications/EmacsKicker.app/Contents/SharedSupport/bin/emacskicker`.
 You can customize this script as you like.
+
+
+How to Create Hander App in macOS
+---------------------------------
+
+1. In Finder: 'Applications' > 'Utilities' > 'Script Editor.app'.
+2. Menu: 'File' > 'New...'
+3. Write the AppleScript to invoke shell script (see below).
+4. Menu: 'File' > 'Save...'.
+   Enter 'Name', select 'File format' as 'Application', and press 'Save' button.
+5. Create shell script `<YourApp>.app/Contents/SharedSupport/bin/<script>`
+   and make it executable by `chmod` command.
+6. Edit `<YourApp>.app/Contents/Info.plist` and register custom URL schema (see below).
+7. Copy '<YourApp>.app' to 'Applications' folder.
+
+AppleScript:
+
+```applescript
+--
+-- please replace '<script>' with your script name
+--
+on open location input
+	set appdir to POSIX path of (path to current application) as string
+	set scriptfile to appdir & "/Contents/SharedSupport/bin/<script>"
+	do shell script scriptfile & " " & (quoted form of input)
+end open location
+```
+
+Shell script:
+
+```sh
+#!/bin/sh
+
+set -eu
+
+if [ $# = 0 ]; then
+  echo "Usage: <script> foobar://open?url=file://<file>&line=<number>"
+  exit 1
+fi
+
+link="$1"
+file=$(echo $link | sed -E 's/foobar:\/\/open\?url=file:\/\/([^&]+)&.*/\1/')
+line=$(echo $link | sed -E 's/foobar:\/\/open\?[^&]+&line=([0-9]+).*/\1/')
+
+code -g "$file:$line"    # VS Code (for example)
+```
+
+Make the script executable:
+
+```console
+[bash]$ chmod +x <YourApp>.app/Contents/SharedSupport/bin/<script>
+```
+
+Info.plit: (add the following to the top of `<dict>`)
+
+```xml
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>YourApp URL</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>foobar</string>
+			</array>
+		</dict>
+	</array>
+```
 
 
 License and Copyright
