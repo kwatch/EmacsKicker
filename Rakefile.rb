@@ -29,6 +29,7 @@ task :edit do
   files = [
     "EmacsKicker.app/Contents/SharedSupport/bin/emacskicker",
     "README.md",
+    "MIT-LICENSE",
   ]
   edit_files(*files, verbose: true) do |s|
     s = s.gsub(/[\$]Release(: .*? )?[\$]/  , '$'"Release: #{RELEASE} "'$')
