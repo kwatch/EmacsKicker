@@ -1,6 +1,6 @@
 
 
-RELEASE   = "0.0.0"
+RELEASE   = "0.1.0"
 COPYRIGHT = "copyright(c) 2023 kuwata-lab.com all rights reserved"
 LICENSE   = "MIT License"
 
