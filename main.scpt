@@ -1,0 +1,1 @@
+on open location input	set appdir to POSIX path of (path to current application) as string	set scriptfile to appdir & "/Contents/SharedSupport/bin/emacskicker"	do shell script scriptfile & " " & (quoted form of input)	-- do shell script "/usr/local/bin/emacskicker " & (quoted form of input)end open location
