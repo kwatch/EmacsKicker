@@ -31,12 +31,12 @@ task :edit do
     "README.md",
     "MIT-LICENSE",
   ]
-  edit_files(*files, verbose: true) do |s|
+  edit_files(*files, verbose: true) do |s, filename|
     s = s.gsub(/[\$]Release(: .*? )?[\$]/  , '$'"Release: #{RELEASE} "'$')
     s = s.gsub(/[\$]Copyright(: .*? )?[\$]/, '$'"Copyright: #{COPYRIGHT} "'$')
     s = s.gsub(/[\$]License(: .*? )?[\$]/  , '$'"License: #{LICENSE} "'$')
     if filename == "README.md"
-      s = s.gsub(/\/v\d+\.\d+\.\d+\.zip/     , "/v#{RELEASE}.zip")
+      s = s.gsub(/\/v\d+\.\d+\.\d+\.zip/   , "/v#{RELEASE}.zip")
     end
     s
   end
