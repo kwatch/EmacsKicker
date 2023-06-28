@@ -1,7 +1,7 @@
 EmacsKicker.app
 ===============
 
-($Release: 0.1.0 $)
+($Release: 0.2.0 $)
 
 
 Overview
@@ -21,7 +21,7 @@ it will work on any macOS version and any CPU architecture.
 Installation
 ------------
 
-1. Download [zip file](https://github.com/kwatch/EmacsKicker/archive/refs/tags/v0.1.0.zip)
+1. Download [zip file](https://github.com/kwatch/EmacsKicker/archive/refs/tags/v0.2.0.zip)
    from [download page](https://github.com/kwatch/EmacsKicker/tags) and unzip it.
 2. Control-click (or Right-click) `Setup.command` script and select 'Open'.
    Confirmation dialog will be displayed, then click 'Open' button.

@@ -8,7 +8,7 @@
 ###   emacskicker [-h|--help]
 ###   emacskicker emacs://open?url=file://<filepath>&line=<number>
 ###
-### $Release: 0.1.0 $
+### $Release: 0.2.0 $
 ### $Copyright: copyright(c) 2023 kuwata-lab.com all rights reserved $
 ### $License: MIT License $
 ###
