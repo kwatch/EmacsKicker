@@ -21,16 +21,18 @@ it will work on any macOS version and any CPU architecture.
 Installation
 ------------
 
-1. [Download Zip file](https://github.com/kwatch/EmacsKicker/tags) and unzip it.
-2. Copy EmacsKicker.app to ``/Applications`` folder.
-3. (optional) Create a symbolic lik for `emacsclient` in the `/usr/local/bin`.
+1. Download [zip file](https://github.com/kwatch/EmacsKicker/archive/refs/tags/v0.1.0.zip)
+   from [download page](https://github.com/kwatch/EmacsKicker/tags) and unzip it.
+2. Control-click (or Right-click) `Setup.command` script and select 'Open'.
+   Confirmation dialog will be displayed, then click 'Open' button.
+3. Move EmacsKicker.app to '/Applications' folder.
+4. Double click EmacsKicker.app under '/Applications' folder to register
+   'emacs://' custom URL.
+5. (optional) Create a symbolic lik for `emacsclient` in the `/usr/local/bin`.
 
 ```console
-[bash]$ x=/Applications/Emacs.app/Contents/MacOS/bin/emacsclient
-[bash]$ ls $x
-/Applications/Emacs.app/Contents/MacOS/bin/emacsclient
-[bash]$ sudo ln -s $x /usr/local/bin
-[bash]$ /usr/local/bin/emacsclient --version
+[Terminal]$ sudo ln -s /Applications/Emacs.app/Contents/MacOS/bin/emacsclient /usr/local/bin/
+[Terminal]$ /usr/local/bin/emacsclient --version
 emacsclient 28.2
 ```
 
@@ -39,24 +41,24 @@ And, of course, you must install Emacs.app, and run `M-x server-start`.
 Then confirm that you can open `emacs://` URL schema.
 
 ```console
-[bash] open emacs://open?url=file://<filepath>&line=<number>
+[Terminal]$ open emacs://open?url=file://<filepath>&line=<number>
 ```
 
 
-Internal Detail
----------------
+Internal Details
+----------------
 
 EmacsKicker.app just runs shell script
 `/Applications/EmacsKicker.app/Contents/SharedSupport/bin/emacskicker`.
 You can customize this script as you like.
 
 
-How to Create Hander App in macOS
----------------------------------
+How to Create a Hander App in macOS
+-----------------------------------
 
 1. In Finder: 'Applications' > 'Utilities' > 'Script Editor.app'.
 2. Menu: 'File' > 'New...'
-3. Write the AppleScript to invoke shell script (see below).
+3. Write the AppleScript program to invoke shell script (see below).
 4. Menu: 'File' > 'Save...'.
    Enter 'Name', select 'File format' as 'Application', and press 'Save' button.
 5. Create shell script `<YourApp>.app/Contents/SharedSupport/bin/<script>`
