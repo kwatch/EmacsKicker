@@ -65,7 +65,7 @@
 	<key>OSAAppletShowStartupScreen</key>
 	<false/>
 	<key>OSAAppletStayOpen</key>
-	<true/>
+	<false/>
 	<key>WindowState</key>
 	<dict>
 		<key>bundleDividerCollapsed</key>
