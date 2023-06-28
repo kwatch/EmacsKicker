@@ -9,7 +9,7 @@ def edit_files(*filenames, verbose: false, &block)
   filenames.each do |filename|
     File.open(filename, 'r+', encoding: 'utf-8') do |f|
       s1 = f.read()
-      s2 = yield s1
+      s2 = yield s1, filename
       if s1 != s2
         f.rewind()
         f.truncate(0)
@@ -35,6 +35,9 @@ task :edit do
     s = s.gsub(/[\$]Release(: .*? )?[\$]/  , '$'"Release: #{RELEASE} "'$')
     s = s.gsub(/[\$]Copyright(: .*? )?[\$]/, '$'"Copyright: #{COPYRIGHT} "'$')
     s = s.gsub(/[\$]License(: .*? )?[\$]/  , '$'"License: #{LICENSE} "'$')
+    if filename == "README.md"
+      s = s.gsub(/\/v\d+\.\d+\.\d+\.zip/     , "/v#{RELEASE}.zip")
+    end
     s
   end
 end
